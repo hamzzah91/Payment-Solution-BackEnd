@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#login.xhtml" PATH="/login.xhtml"
+  SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#login.xhtml:0" NAME="item"
+   PATH="/login.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="admin::#pages#admin#dashboard.xhtml"
+    NAME="output" PATH="/pages/admin/dashboard.xhtml"
+    TARGET="rules:#pages#admin#dashboard.xhtml" TITLE="admin" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="vtm::#pages#vtm#dashboard.xhtml"
+    NAME="output1" PATH="/pages/vtm/dashboard.xhtml"
+    TARGET="rules:#pages#vtm#dashboard.xhtml" TITLE="vtm" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="unknown::#login.xhtml" NAME="output2"
+    PATH="/login.xhtml" TARGET="rules:#login.xhtml" TITLE="unknown" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#admin#dashboard.xhtml"
+  PATH="/pages/admin/dashboard.xhtml" SHAPE="272,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#vtm#dashboard.xhtml"
+  PATH="/pages/vtm/dashboard.xhtml" SHAPE="272,209,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

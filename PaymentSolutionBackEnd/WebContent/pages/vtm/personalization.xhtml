@@ -1,0 +1,37 @@
+<ui:composition template="/WEB-INF/templates/mainlayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	>
+<!-- 
+	<ui:define name="side-menu">
+		<ui:include src="/WEB-INF/includes/menu/vtm_customer_menu.xhtml" />
+	</ui:define>
+ -->
+	<ui:define name="content">
+		<pe:fluidGrid resizeBound="false" hGutter="20" widgetVar="fluidGridWdgt">
+			<c:forEach var="itm" items="#{customerDashboard.customerSummaryList}">
+				<pe:fluidGridItem>
+					<p:panel header="#{itm.customer}" style="margin-bottom:20px">
+				        <h:panelGrid columns="2" cellpadding="5">
+				            <h:outputText value="Transaction Count:" />
+				            <h:outputText value="#{itm.transactionCount}" />
+				            <h:outputText value="Declined Transaction:" />
+				            <h:outputText value="#{itm.declinedTransaction}" />
+				            <h:outputText value="Total Terminals:" />
+				            <h:outputText value="#{itm.totalTerminals}" />
+				            <h:outputText value="Locations:" />
+				            <h:outputText value="#{itm.locations}" />
+				        </h:panelGrid>
+			    	</p:panel>
+				</pe:fluidGridItem>
+			</c:forEach>
+		</pe:fluidGrid>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,153 @@
+<ui:composition template="/WEB-INF/templates/mainlayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<!-- 
+	<ui:define name="side-menu">
+		<ui:include src="/WEB-INF/includes/menu/vtm_customer_menu.xhtml" />
+	</ui:define>
+ -->
+	<ui:define name="content">
+		<h:form>
+			<p:fieldset legend="Terminal Information" style="margin-bottom: 30px;">
+				<p:panelGrid columns="3"
+					style="width:100%; border-style: hidden !important;">
+					<p:column style="width:50%;">
+						<p:panel>
+							<div class="ui-g">
+								<div class="ui-g-6">Terminal Id</div>
+								<div class="ui-g-6">
+									<p:inputText  id="terminalId"
+										value="#{terminalOnBoarding.terminalInfo.terminalId}"  maxlength="20" required="true" requiredMessage="Terminal ID is required."/>
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">Branch Code</div>
+								<!--    <div class="ui-g-6"><p:inputText value="#{terminalOnBoarding.terminalInfo.branchId}"/></div>
+ -->
+								<p:selectOneMenu id="branch"
+									value="#{terminalOnBoarding.branch}" style="width:150px" required="true" requiredMessage="Branch Code is required.">
+									<p:ajax listener="#{terminalOnBoarding.onBranchChange}" />
+									<f:selectItem itemLabel="Select Branch" itemValue=""
+										noSelectionOption="true" />
+									<f:selectItems value="#{terminalOnBoarding.branchs}"/>
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">Currency Code</div>
+								<div class="ui-g-6">
+									<p:inputText
+										value="#{terminalOnBoarding.terminalInfo.currencyCode}" maxlength="3" required="true" requiredMessage="Currency Code is required." placeholder="AED"/>
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">Merchant Id</div>
+								<div class="ui-g-6">
+									<p:inputText
+										value="#{terminalOnBoarding.terminalInfo.merchantId}" maxlength="16" required="true" requiredMessage="Merchant ID is required."/>
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">Acquirer Institution Id</div>
+								<div class="ui-g-6">
+									<p:inputText
+										value="#{terminalOnBoarding.terminalInfo.acquirerInstitutionId}" maxlength="16" required="true" requiredMessage="Acquirer ID is required."/>
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">Machine Model No</div>
+								<div class="ui-g-6">
+									<p:inputText value="#{terminalOnBoarding.terminalInfo.modelNo}" />
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">Machine Serial No</div>
+								<div class="ui-g-6">
+									<p:inputText
+										value="#{terminalOnBoarding.terminalInfo.machineSerialNo}" maxlength="20" />
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">Application Version</div>
+								<div class="ui-g-6">
+									<p:inputText
+										value="#{terminalOnBoarding.terminalInfo.applicationVersion}" maxlength="10"/>
+								</div>
+							</div>
+						</p:panel>
+					</p:column>
+					<h:column style="width:50%;">
+						<p:panel>
+							<div class="ui-g">
+								<div class="ui-g-6">Caller Id</div>
+								<div class="ui-g-6">
+									<p:inputText
+										value="#{terminalOnBoarding.terminalInfo.callerId}" maxlength="6" />
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">Access Code</div>
+								<div class="ui-g-6">
+									<p:inputText
+										value="#{terminalOnBoarding.terminalInfo.accessCode}" maxlength="6"/>
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">Location</div>
+								<div class="ui-g-6">
+									<p:inputText
+										value="#{terminalOnBoarding.terminalInfo.location}" />
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">City</div>
+								<div class="ui-g-6">
+									<p:inputText value="#{terminalOnBoarding.terminalInfo.city}" maxlength="50"/>
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">State/Emirate</div>
+								<div class="ui-g-6">
+									<p:inputText value="#{terminalOnBoarding.terminalInfo.state}" maxlength="50"/>
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">IP Address</div>
+								<div class="ui-g-6">
+									<p:inputText
+										value="#{terminalOnBoarding.terminalInfo.ipAddress}" maxlength="15"/>
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">Nat IP Address</div>
+								<div class="ui-g-6">
+									<p:inputText
+										value="#{terminalOnBoarding.terminalInfo.natIpAddress}" maxlength="15"/>
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">Physical Address</div>
+								<div class="ui-g-6">
+									<p:inputText
+										value="#{terminalOnBoarding.terminalInfo.physicalAddress}" maxlength="20"/>
+								</div>
+							</div>
+						</p:panel>
+					</h:column>
+				</p:panelGrid>
+				<br></br>
+
+				<p:growl id="msgs" showDetail="true" />
+				<h:commandButton value="Save" type="submit"
+					styleClass="ui-priority-primary" update="msgs"
+					actionListener="#{terminalOnBoarding.saveTerminal}" />
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

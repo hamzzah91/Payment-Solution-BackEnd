@@ -1,0 +1,71 @@
+<ui:composition template="/WEB-INF/templates/mainlayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="content">
+		<h:form id="asform">
+			<p:growl id="notif" life="2000" />
+			<p:dataTable id="settingsTable" var="as"
+				value="#{remoteDeployment.terminalRemoteDeploymentList}">
+				<f:facet name="header">Remote Deployment</f:facet>
+				<p:column headerText="Terminal" width="100"
+					style="text-align: center;">
+					<h:outputText value="#{as.terminalId}" />
+				</p:column>
+				<p:column headerText="Last Version" style="text-align: center;"
+					width="80">
+					<h:outputText value="#{as.version}" />
+				</p:column>
+
+				<p:column headerText="View" style="text-align: center;" width="80">
+					
+				</p:column>
+
+				<p:column headerText="Upload" width="500"
+					style="text-align: center;">
+					<h:form enctype="multipart/form-data" id="uploadForm">
+						<p:growl id="messages" showDetail="true" />
+						<p:outputLabel for="vers" value="File Version:" />
+						<p:inputText id="vers" name="vers"
+							value="#{remoteDeployment.uploadedVersion}" placeholder="1.x.x.x"
+							maxlength="17" required="true"
+							requiredMessage="Version is required." />
+						<p:separator />
+						<!-- <p:fileUpload value="#{remoteDeployment.file}" mode="simple"
+							skinSimple="true" />
+
+						<p:commandButton value="Submit"
+							actionListener="#{remoteDeployment.upload}" update="messages"/> -->
+
+						<p:fileUpload onstart="submitVersion()"
+							fileUploadListener="#{remoteDeployment.upload}" update="messages" >
+							<f:attribute name="terminalSettings" value="#{as}" />
+						</p:fileUpload>
+
+
+						<p:remoteCommand name="submitVersion" process="vers" />
+
+					</h:form>
+				</p:column>
+				<p:column headerText="Schedule" style="text-align: center;"
+					width="180">
+					<p:outputLabel for="datetime" />
+					<p:calendar id="datetime" value="#{as.scheduleTime}"
+						pattern="yyyy-MM-dd HH:mm:ss" />
+				</p:column>
+
+				<p:column headerText="Action" width="80"
+					style="text-align: center;">
+					<p:commandButton ajax="true" value="Sync"
+						action="#{remoteDeployment.sync(as)}" update=":asform:notif" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+		<p:panelMenu>
+			<p:submenu label="Banks" >
+				<c:forEach var="itm" items="#{adminMenuVtm.customers}">
+					<p:menuitem value="#{itm}" icon="fa fa-institution" />
+				</c:forEach>
+			</p:submenu>
+			<p:separator />
+			<p:submenu label="Contents">
+				<p:menuitem value="Advertisements" icon="fa fa-newspaper-o" />
+				<p:menuitem value="Asset Management" icon="fa fa-table" />
+			</p:submenu>
+			<p:separator />
+			<p:submenu label="Deployments">
+				<p:menuitem value="Onboarding" icon="fa fa-cubes" />
+				<p:menuitem value="Create Settings" icon="fa fa-gear" />
+			</p:submenu>
+			<p:submenu label="Manage Keys">
+			</p:submenu>
+			<p:submenu label="Reports">
+			</p:submenu>
+		</p:panelMenu>
+	</h:form>
+</ui:composition>

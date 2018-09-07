@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="cmportal-0.3.0">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/test"/>
+        <dependent-module archiveName="cm.models-0.1.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/cmmodels/cmmodels">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="cmcommserver-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/cmcommserver/cmcommserver">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/cmportal/build/classes"/>
+        <property name="component.exclusion.patterns" value="WEB-INF/classes/certificate/*.*"/>
+        <property name="context-root" value="RemitNow"/>
+    </wb-module>
+</project-modules>

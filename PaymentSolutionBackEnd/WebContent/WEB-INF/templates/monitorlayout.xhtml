@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+	 xmlns:f="http://xmlns.jcp.org/jsf/core"
+	 xmlns:h="http://xmlns.jcp.org/jsf/html"
+	 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+     xmlns:p="http://primefaces.org/ui">
+	
+	<f:view contentType="text/html" locale="en">
+		<ui:insert name="metadata" />
+
+		<h:head id="head">
+			<title>Channel Management</title>
+			<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+			<meta name="viewport" content="width=device-width,maximum-scale=2" />
+			<ui:include src="/WEB-INF/includes/layout/head-resources.xhtml" />
+			
+		</h:head>
+
+		<h:body>
+				
+			<p:layout fullPage="true">
+				<p:layoutUnit position="center">
+					<p:layout>
+						
+						<p:layoutUnit position="center" resizable="false" closable="false" gutter="0" id="body">
+							<ui:insert name="content" >
+					 	  
+					   		</ui:insert>
+						</p:layoutUnit>
+					</p:layout>
+					
+				</p:layoutUnit>
+			</p:layout>
+			
+		</h:body>
+	</f:view>    
+</html>
+

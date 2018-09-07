@@ -1,0 +1,29 @@
+<ui:composition 
+     xmlns="http://www.w3.org/1999/xhtml"
+	 xmlns:f="http://xmlns.jcp.org/jsf/core"
+	 xmlns:h="http://xmlns.jcp.org/jsf/html"
+	 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	 xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+     xmlns:p="http://primefaces.org/ui">
+
+	<p align="center">
+	<h:graphicImage library="assets" name="images/omnia_182x50.png"/>
+	</p>
+	<c:choose>
+		<c:when test="#{user_type == 'admin'}">
+			<ui:include src="/WEB-INF/includes/menu/admin_menu.xhtml" />
+		</c:when>
+		<c:when test="#{user_type == 'vtm'}">
+			<ui:include src="/WEB-INF/includes/menu/vtm_customer_menu.xhtml" />
+		</c:when>
+		<c:when test="#{user_type == 'mpos'}">
+			<ui:include src="/WEB-INF/includes/menu/mpos_customer_menu.xhtml" />
+		</c:when>
+		<c:otherwise>
+			<ui:include src="/WEB-INF/includes/menu/admin_menu.xhtml" />
+		</c:otherwise>
+	</c:choose>
+	
+
+</ui:composition>

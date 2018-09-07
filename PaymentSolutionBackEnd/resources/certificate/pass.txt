@@ -1,0 +1,10 @@
+pfx Root Authority Certificate
+0mn1@p@ym3nts
+
+
+pfx CM Certificate
+0mn1@p@ym3nts
+
+
+jks pass
+0mn1@p@ym3nts

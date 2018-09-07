@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     	xmlns:cxf="http://cxf.apache.org/core"
+		xmlns:jaxws="http://cxf.apache.org/jaxws"
+		xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+		xsi:schemaLocation="
+			http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+			http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+			http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml"/>
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
+
+    <cxf:bus>
+        <cxf:features>
+            <cxf:logging/>
+        </cxf:features>
+    </cxf:bus>
+
+	
+	<!-- <bean id="jaxbObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/> -->
+	<bean id="customObjectMapper" class="com.omnia.pie.cm.web.CustomObjectMapper"/>
+	<bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" scope="singleton">
+	    <property name="mapper" ref="customObjectMapper" />
+	</bean> 
+	<!-- <bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.JacksonJsonProvider"/> -->
+	<!-- <bean id="agentJobController" class="com.omnia.pie.cm.web.rest.AgentJobController"/>
+ -->	<bean id="deviceMonitoringController" class="com.omnia.pie.cm.web.rest.DeviceMonitoringController"/>
+	<bean id="authenticationController" class="com.omnia.pie.cm.web.rest.AuthenticationController"/>
+	
+	<jaxrs:server id="authenticationControllerRS" address="/services">
+  		<jaxrs:serviceBeans>
+  			<ref bean="authenticationController"/>
+  		</jaxrs:serviceBeans>
+  		<jaxrs:providers>
+			<ref bean='jsonProvider' />
+		</jaxrs:providers>
+  	</jaxrs:server>
+    <!-- 	<jaxrs:server id="deviceMonitoringControllerRS" address="/deviceMonitoring">
+  		<jaxrs:serviceBeans>
+  			<ref bean="deviceMonitoringController"/>
+  		</jaxrs:serviceBeans>
+  		<jaxrs:providers>
+			<ref bean='jsonProvider' />
+		</jaxrs:providers>
+  	</jaxrs:server> -->
+  	
+</beans>

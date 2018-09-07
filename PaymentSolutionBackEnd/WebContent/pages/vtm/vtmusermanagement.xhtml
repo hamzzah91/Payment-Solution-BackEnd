@@ -1,0 +1,143 @@
+<ui:composition template="/WEB-INF/templates/mainlayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="content">
+		<h:form id="userMgntform">
+			<p:growl id="notif" life="2000" />
+			
+			<p:dataTable id="usrTbl" var="itm" value="#{usrManagement.userList}" selectionMode="single" selection="#{usrManagement.selectedUser}" rowKey="#{itm.username}" style="margin:10px">
+				<p:column>
+					<f:facet name="header">Username</f:facet>
+					<h:outputText value="#{itm.username}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Email</f:facet>
+					<h:outputText value="#{itm.email}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Group</f:facet>
+					<h:outputText value="#{itm.userGroupName}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Last Login</f:facet>
+					<h:outputText value="#{itm.lastLogin}" converter="localDateTimeConverter" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Password Date</f:facet>
+					<h:outputText value="#{itm.passwordDate}" converter="localDateTimeConverter" />
+				</p:column>
+				<p:column style="text-align:center; width:100px">
+					<f:facet name="header">Password Blocked</f:facet>
+					<h:outputText value="#{itm.passwordBlocked ? 'YES' : 'NO'}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Blocked Until</f:facet>
+					<h:outputText value="#{itm.blockedUntil}" converter="localDateTimeConverter" />
+				</p:column>
+				<f:facet name="footer">
+					<p:commandButton id="newUsrBtn" widgetVar="newUsrBtn" value="Create" icon="ui-icon-plus" action="#{usrManagement.prepareNewUsr}" immediate="true" oncomplete="PF('newUsrDialog').show()" />
+					<p:commandButton id="editUsrBtn" widgetVar="editUstBtn" value="Update" icon="ui-icon-pencil" oncomplete="PF('editUsrDialog').show()"/>
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+		<h:form>
+			 <p:overlayPanel id="newUsrDialog" widgetVar="newUsrDialog" modal="true" appendToBody="true" dynamic="true" styleClass="overlayPanelGroup">
+				<p:panelGrid>
+						<f:facet name="header">Create New User</f:facet>
+						<p:row>
+							<p:column>
+								<h:outputLabel for="usernameAdd" value="Username"/>
+							</p:column>
+							<p:column>
+								<p:inputText id="usernameAdd" value="#{usrManagement.newUser.username}" maxlength="64">
+									<p:ajax async="true" />
+								</p:inputText>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel for="emailAdd" value="Email"/>
+							</p:column>
+							<p:column>
+								<p:inputText id="emailAdd" value="#{usrManagement.newUser.email}" maxlength="50" >
+									<p:ajax async="true" />
+								</p:inputText>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel for="grpAdd" value="Group"/>
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="grpAdd" value="#{usrManagement.newUser.userGroupId}">
+									<f:selectItems value="#{usrManagement.customerGroup}" var="grpItm" itemLabel="#{grpItm.name}" itemValue="#{grpItm.id}"/>
+									<p:ajax async="true" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<center>
+								<p:commandButton value="Save" style="width:100px" ajax="true" action="#{usrManagement.saveNewUsr}" process="@this" immediate="true" oncomplete="PF('newUsrDialog').hide()" />
+								<p:commandButton value="Cancel" style="width:100px" ajax="true" oncomplete="PF('newUsrDialog').hide()" process="@this" immediate="true" />
+								</center>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:overlayPanel>
+			</h:form>	
+			<h:form>			
+				<p:overlayPanel id="editUsrDialog" widgetVar="editUsrDialog" modal="true" appendToBody="true" dynamic="true" styleClass="overlayPanelGroup">
+					<p:panelGrid>
+							<f:facet name="header">Update User</f:facet>
+							<p:row>
+								<p:column>
+									<h:outputLabel for="usernameEdit" value="Username"/>
+								</p:column>
+								<p:column>
+									<p:inputText id="usernameEdit" value="#{usrManagement.selectedUser.username}" maxlength="64">
+										<p:ajax async="true" />
+									</p:inputText>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel for="emailEdit" value="Email"/>
+								</p:column>
+								<p:column>
+									<p:inputText id="emailEdit" value="#{usrManagement.selectedUser.email}" maxlength="50" >
+										<p:ajax async="true" />
+									</p:inputText>
+								</p:column>
+							</p:row>
+							<p:row>
+							<p:column>
+								<p:outputLabel for="grpEdit" value="Group"/>
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="grpEdit" value="#{usrManagement.selectedUser.userGroupId}">
+									<f:selectItems value="#{usrManagement.customerGroup}" var="grpItm" itemLabel="#{grpItm.name}" itemValue="#{grpItm.id}"/>
+									<p:ajax async="true" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+							<p:row>
+								<p:column colspan="2">
+									<center>
+									<p:commandButton value="Save" style="width:100px" ajax="true" action="#{usrManagement.updateUsr}" process="@this" immediate="true" oncomplete="PF('editUsrDialog').hide()" />
+									<p:commandButton value="Cancel" style="width:100px" ajax="true" oncomplete="PF('editUsrDialog').hide()" process="@this" immediate="true" />
+									</center>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+				</p:overlayPanel>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

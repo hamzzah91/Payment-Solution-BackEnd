@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+	version="2.2">
+	<application>
+		<el-resolver>
+    		    org.springframework.web.jsf.el.SpringBeanFacesELResolver
+		</el-resolver>
+		<resource-bundle>
+			<base-name>bundles.general-resources</base-name>
+			<var>generalres</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>bundles.vtm-resources</base-name>
+			<var>vtmres</var>
+		</resource-bundle>
+	</application>
+	<converter>
+	    <converter-id>localDateTimeConverter</converter-id>
+	    <converter-class>com.omnia.pie.cm.ui.converter.LocalDateTimeConverter</converter-class>
+	</converter>
+	<converter>
+	    <converter-id>localDateConverter</converter-id>
+	    <converter-class>com.omnia.pie.cm.ui.converter.LocalDateConverter</converter-class>
+	</converter>
+	<converter>
+	    <converter-id>localTimeConverter</converter-id>
+	    <converter-class>com.omnia.pie.cm.ui.converter.LocalTimeConverter</converter-class>
+	</converter>
+	<navigation-rule>
+		<from-view-id>/login.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>admin</from-outcome>
+			<to-view-id>/pages/admin/dashboard.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>vtm</from-outcome>
+			<to-view-id>/pages/vtm/dashboard.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>unknown</from-outcome>
+			<to-view-id>/login.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+</faces-config>

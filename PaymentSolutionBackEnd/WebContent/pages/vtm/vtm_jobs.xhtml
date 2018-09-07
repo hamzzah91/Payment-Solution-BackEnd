@@ -1,0 +1,81 @@
+<ui:composition template="/WEB-INF/templates/monitorlayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<ui:define name="content">
+		<div id="#formdivcenter">
+			<h:form id="dbform">
+				<p:poll interval="2" listener="#{vtmJobs.pullJobDetails}" update="dbform:resultConsole" />
+				<p:panelGrid columns="2" columnClasses="alignTop,alignTop" style="width:800px; margin: 0 auto;">
+						<f:facet name="header">
+					       		#{param['terminalId']}
+					       		<p:outputPanel style="float: right">        
+								    <p:link outcome="monitor.xhtml?faces-redirect=true" value="Back" style="color: SteelBlue;text-decoration: none;">
+					       				<f:param name="terminalId" value="#{itm.terminal}" />
+					       			</p:link> 
+								</p:outputPanel>
+					    	</f:facet>
+						<!-- 
+							<p:panelGrid columns="1" styleClass="noBorders">
+								<p:dataTable id="statusList" value="#{vtmJobs.terminalOverviewList}" var="itmData"
+									tableStyle="width:auto">
+									<f:facet name="header">Device Controls</f:facet>
+									<p:column headerText="Device">
+										<h:outputText value="#{itmData.deviceName}" />
+									</p:column>
+									<p:column headerText="Status">
+											<h:outputText value="#{itmData.status}"
+												styleClass="#{itmData.status eq 'Online'? 'colorItGreen': 'blinkItRed'}" />
+										</p:column>
+									<p:column>
+										<p:growl id="growl1" life="2000" />
+
+										<p:commandButton value="Reset" id="resetDevice"
+											update="growl1"
+											actionListener="#{vtmJobs.resetDevice(itmData.deviceName)}"
+											styleClass="ui-priority-primary" />
+									</p:column>
+									<p:column>
+										<p:growl id="growl2" life="2000" />
+
+										<p:commandButton value="Initialize" id="initDevice"
+											update="growl2"
+											actionListener="#{vtmJobs.initDevice(itmData.deviceName)}"
+											styleClass="ui-priority-primary" />
+									</p:column>
+								</p:dataTable>
+							</p:panelGrid>
+						-->
+							<p:panelGrid columns="1" styleClass="noBorders" style="margin:10px;">
+							<p:row>
+								<p:outputLabel for="job" />
+								<p:selectOneMenu id="job" value="#{vtmJobs.job}" style="width:150px">
+									<p:ajax listener="#{vtmJobs.onJobChange}" />
+									<f:selectItem itemLabel="Select Job/Task" itemValue="" noSelectionOption="true" />
+									<f:selectItems value="#{vtmJobs.jobs}" />
+								</p:selectOneMenu>
+
+								<p:separator />
+								<p:growl id="msgs" showDetail="true" />
+
+								<p:commandButton value="Run Task" update="msgs" actionListener="#{vtmJobs.submittedJob}" icon="ui-icon-check" />
+							</p:row>
+						</p:panelGrid>
+							<p:panel style="margin:10px; width:600px; padding:10px;">
+								<f:facet name="header">Message Console</f:facet>
+								<h:outputText id="resultConsole" value="#{fn:replace(vtmJobs.msg,'\\n','&lt;br/&gt;')}" escape="false" />
+							</p:panel>
+					</p:panelGrid>
+			
+			</h:form>
+		</div>
+	</ui:define>
+
+</ui:composition>

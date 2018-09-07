@@ -1,0 +1,150 @@
+<ui:composition template="/WEB-INF/templates/mainlayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="content">
+		<h:form id="logform">
+			<p:growl id="notif" life="2000" />
+			<p:dataTable id="settingsTable" var="log" value="#{logVtm.logSettingsList}">
+				<f:facet name="header">Logs Upload Scheduling</f:facet>
+				<p:column headerText="Terminal" width="150" style="text-align: center;">
+					<h:outputText value="#{log.terminal}" />
+				</p:column>
+
+				<p:column headerText="SFTP Path" style="text-align: center;">
+					<p:inputText value="#{log.sftpPath}" size="90" style="border: none;" />
+				</p:column>
+				<p:column headerText="SFTP Port" style="text-align: center;">
+					<p:inputText value="#{log.sftpPort}" size="90" style="border: none;" />
+				</p:column>
+				<p:column headerText="SFTP User" style="text-align: center;">
+					<p:inputText value="#{log.sftpUser}" size="90" style="border: none;" />
+				</p:column>
+				<p:column headerText="SFTP Password" style="text-align: center;">
+					<p:password value="#{log.sftpPassword}" size="90" redisplay="true" style="border: none;" />
+				</p:column>
+				<p:column headerText="Occurence" style="text-align: center;" width="120">
+					#{log.occurence}
+				</p:column>
+
+				<p:column id="schedCol" headerText="Schedule Time" width="150" style="text-align: center;">
+					<!-- <pe:timePicker value="#{log.uploadSchedule}" mode="popup" widgetVar="spinnerBtnTimeWidget"  showOn="button" label="Spinner time picker with button" styleClass="weight: 0.8;"/> -->
+					<!-- <p:calendar value="#{log.uploadSchedule}" pattern="HH:mm:ss" timeOnly="true" stepMinute="5" stepSecond="5" timeControlType="select" /> -->
+					<!-- <p:inputText value="#{log.uploadSchedule}" size="10" style="border: none;" /> -->
+					<p:calendar value="#{log.uploadSchedule}" pattern="HH:mm:ss" timeOnly="true" stepMinute="5" stepSecond="5" timeControlType="select" showOn="false" size="10" />
+					<p:commandButton id="schedulePanelBtn" update=":logform:scheduleDetail" oncomplete="PF('schedulePanel').show()" icon="fa fa-clock-o">
+						<f:setPropertyActionListener value="#{log}" target="#{logVtm.selectedTerminalLogSettings}" />
+					</p:commandButton>
+				</p:column>
+
+				<p:column headerText="Action" width="120" style="text-align: center;">
+					<p:commandButton ajax="true" value="Sync" action="#{logVtm.sync(log)}" update=":logform:notif" />
+				</p:column>
+			</p:dataTable>
+
+			<p:overlayPanel id="schedulePanel" widgetVar="schedulePanel" showEffect="fade" dismissable="false" showCloseIcon="true" for="logform:settingsTable:0:schedulePanelBtn" my="right top" at="left top">
+				<p:outputPanel id="scheduleDetail">
+					<p:panelGrid rendered="#{not empty logVtm.selectedTerminalLogSettings}">
+						<f:facet name="header"> Update Schedule</f:facet>
+						<p:row>
+							<p:column>
+								<h:outputLabel for="frequency" value="Frequency"/>
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="frequency" value="#{logVtm.selectedTerminalLogSettings.occurence}" >
+									<f:selectItem itemLabel="DAILY" itemValue="DAILY" />
+									<f:selectItem itemLabel="HOURLY" itemValue="HOURLY" />
+									<f:selectItem itemLabel="MINUTE INTERVAL" itemValue="MINUTES" />
+									<f:selectItem itemLabel="SECOND INTERVAL" itemValue="SECONDS" />
+									<p:ajax listener="#{logVtm.occurencePropertyChanged}" update="logform:hour logform:minute logform:second logform:everyMinute logform:everySecond logform:everySecondLabel" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column>
+								<h:outputLabel for="hour" value="At Hour"/>
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="hour" value="#{logVtm.selectedTerminalLogSettings.hours}" disabled="#{not logVtm.dailySelected}">
+									<c:forEach varStatus="cnt" begin="0" end="23">
+										<f:selectItem itemLabel="#{cnt.index}" itemValue="#{cnt.index}" />
+									</c:forEach>
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column>
+								<h:outputLabel for="minute" value="At Minute"/>
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="minute" value="#{logVtm.selectedTerminalLogSettings.minutes}" disabled="#{logVtm.minutesSelected or logVtm.secondSelected}">
+									<c:forEach varStatus="cnt" begin="0" end="59">
+										<f:selectItem itemLabel="#{cnt.index}" itemValue="#{cnt.index}" />
+									</c:forEach>
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column>
+								<h:outputLabel for="second" value="At Second"/>
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="second" value="#{logVtm.selectedTerminalLogSettings.seconds}" disabled="#{logVtm.minutesSelected or logVtm.secondSelected}" >
+									<c:forEach varStatus="cnt" begin="0" end="59">
+										<f:selectItem itemLabel="#{cnt.index}" itemValue="#{cnt.index}" />
+									</c:forEach>
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row><p:column colspan="2"></p:column> </p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel for="everyMinute" value="At Every"/>
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="everyMinute" value="#{logVtm.selectedTerminalLogSettings.minutes}" disabled="#{not logVtm.minutesSelected}">
+									<c:forEach varStatus="cnt" begin="1" end="59">
+										<f:selectItem itemLabel="#{cnt.index}" itemValue="#{cnt.index}" />
+									</c:forEach>
+								</p:selectOneMenu>
+								Minute(s)
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel id="everySecondLabel" for="everySecond" value="At #{logVtm.minutesSelected ? '' : 'Every'}"/>
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="everySecond" value="#{logVtm.selectedTerminalLogSettings.seconds}" disabled="#{not (logVtm.secondSelected or logVtm.minutesSelected)}" >
+									<c:forEach varStatus="cnt" begin="1" end="59">
+										<f:selectItem itemLabel="#{cnt.index}" itemValue="#{cnt.index}" />
+									</c:forEach>
+								</p:selectOneMenu>
+								Second(s) - #{not (logVtm.secondSelected or logVtm.minutesSelected)} - #{logVtm.minutesSelected ? '' : 'Every'}
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column colspan="2">
+								<center>
+								<p:commandButton value="Save" style="width:100px" ajax="true" action="#{logVtm.saveItem}" oncomplete="PF('schedulePanel').hide()" update="logform:settingsTable" />
+								<p:commandButton value="Cancel" style="width:100px" ajax="true" oncomplete="PF('schedulePanel').hide()" process="@this" immediate="true" />
+								</center>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					
+				</p:outputPanel>
+			</p:overlayPanel>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

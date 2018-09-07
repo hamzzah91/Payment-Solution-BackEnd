@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+		<p:menu style="width:240px">
+			<p:submenu label="Manage Channels">
+				<p:menuitem value="MPOS" icon="ui-icon-signal-diag" />
+				<p:menuitem value="VTM" icon="ui-icon-signal" action="#{adminMenu.vtm}" />
+				<p:menuitem value="VTA" icon="ui-icon-grip-diagonal-se" />
+				<p:menuitem value="MPOS PORTAL" icon="ui-icon-squaresmall-close" />
+				<p:menuitem value="WALLET" icon="ui-icon-grip-solid-horizontal" />
+			</p:submenu>
+			<p:submenu label="Channel Users">
+				<p:menuitem value="MPOS Users" icon="ui-icon-person" />
+				<p:menuitem value="VTM Users" icon="ui-icon-tag" />
+				<p:menuitem value="Administrator" icon="ui-icon-clock" />
+			</p:submenu>
+			<p:submenu label="Reports">
+				<p:menuitem value="Audit Trail" icon="ui-icon-contact" />
+			</p:submenu>		
+		</p:menu>
+	</h:form>
+</ui:composition>

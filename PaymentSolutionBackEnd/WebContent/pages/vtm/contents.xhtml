@@ -1,0 +1,56 @@
+<ui:composition template="/WEB-INF/templates/mainlayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<!-- 
+	<ui:define name="side-menu">
+		<ui:include src="/WEB-INF/includes/menu/vtm_customer_menu.xhtml" />
+	</ui:define>
+ -->
+	<ui:define name="content">
+		<h:form>
+			<p:panel header="Assets folders" style="margin:20px">
+				<h:panelGrid cellpadding="10" columns="2">
+					<p:commandButton value="Create folder" icon="fa fa-folder-open" />
+					<p:commandButton value="Delete folder" icon="fa fa-window-close" />
+				</h:panelGrid>
+				<h:panelGrid cellpadding="10" width="100%">
+					<p:tree id="tree" value="#{contentVtm.contentRootFolder}" var="node" selectionMode="single" selection="#{contentVtm.selectedItem}"
+						orientation="horizontal" animate="true" highlight="true"
+						style="width: 100%">
+						<p:treeNode>
+							<h:outputText value="#{node}" />
+						</p:treeNode>
+					</p:tree>
+				</h:panelGrid>
+			</p:panel>
+			<p:layout style="margin:20px; min-height:600px;">
+
+				<p:layoutUnit position="center">
+					<p:dataTable>
+						<p:column headerText="Filename">
+							<h:outputText value="-" />
+						</p:column>
+						<p:column headerText="Type">
+							<h:outputText value="-" />
+						</p:column>
+						<p:column headerText="Size">
+							<h:outputText value="-" />
+						</p:column>
+					</p:dataTable>
+				</p:layoutUnit>
+				<p:layoutUnit position="east" size="50%" resizable="false">
+					<p:fileUpload uploadLabel="Upload content" value="" mode="advanced"
+						multiple="true" />
+				</p:layoutUnit>
+			</p:layout>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

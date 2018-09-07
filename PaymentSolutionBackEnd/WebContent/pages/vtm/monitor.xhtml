@@ -1,0 +1,302 @@
+<ui:composition template="/WEB-INF/templates/monitorlayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="content">
+	<!-- <div id="#formdivcenter"> -->
+		<h:form id="monitorform">
+			<p:overlayPanel widgetVar="terminalInfoPanel" appendToBody="true" dynamic="true" modal="true" dismissable="true" styleClass="overlayPanelGroup">
+				<p:fieldset legend="Terminal Information" style="margin-bottom: 30px;">
+					<p:panelGrid id="tInfoPanelDisp" columns="3" style="width:900px; border-style: hidden !important;">
+						<p:column style="width:50%;">
+							<p:panel>
+								<div class="ui-g">
+									<div class="ui-g-6">Terminal Id</div>
+									<div class="ui-g-6">
+										<p:outputLabel
+											value="#{customerDashboard.terminalInfo.terminalId}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">Branch Id</div>
+									<div class="ui-g-6">
+										<p:outputLabel
+											value="#{customerDashboard.terminalInfo.branchId}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">Currency Code</div>
+									<div class="ui-g-6">
+										<p:outputLabel
+											value="#{customerDashboard.terminalInfo.currencyCode}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">Merchant Id</div>
+									<div class="ui-g-6">
+										<p:outputLabel
+											value="#{customerDashboard.terminalInfo.merchantId}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">Acquirer Institution Id</div>
+									<div class="ui-g-6">
+										<p:outputLabel
+											value="#{customerDashboard.terminalInfo.acquirerInstitutionId}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">Machine Model No</div>
+									<div class="ui-g-6">
+										<p:outputLabel
+											value="#{customerDashboard.terminalInfo.modelNo}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">Machine Serial No</div>
+									<div class="ui-g-6">
+										<p:outputLabel
+											value="#{customerDashboard.terminalInfo.machineSerialNo}" />
+									</div>
+								</div>
+							</p:panel>
+						</p:column>
+						<h:column style="width:50%;">
+							<p:panel>
+								<div class="ui-g">
+									<div class="ui-g-6">Caller Id</div>
+									<div class="ui-g-6">
+										<p:outputLabel
+											value="#{customerDashboard.terminalInfo.callerId}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">Access Code</div>
+									<div class="ui-g-6">
+										<p:outputLabel
+											value="#{customerDashboard.terminalInfo.accessCode}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">Location</div>
+									<div class="ui-g-6">
+										<p:outputLabel
+											value="#{customerDashboard.terminalInfo.location}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">City</div>
+									<div class="ui-g-6">
+										<p:outputLabel value="#{customerDashboard.terminalInfo.city}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">State/Emirate</div>
+									<div class="ui-g-6">
+										<p:outputLabel value="#{customerDashboard.terminalInfo.state}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">IP Address</div>
+									<div class="ui-g-6">
+										<p:outputLabel
+											value="#{customerDashboard.terminalInfo.ipAddress}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">Physical Address</div>
+									<div class="ui-g-6">
+										<p:outputLabel
+											value="#{customerDashboard.terminalInfo.physicalAddress}" />
+									</div>
+								</div>
+							</p:panel>
+						</h:column>
+					</p:panelGrid>
+				</p:fieldset>
+				<center>
+					<p:commandButton value="Close" style="width:100px" oncomplete="PF('terminalInfoPanel').hide()" />
+				</center>
+			</p:overlayPanel>
+			<p:overlayPanel widgetVar="deviceErrorPanel" appendToBody="true" dynamic="true" modal="true" dismissable="true" styleClass="overlayPanelGroup">
+				<p:fieldset legend="Error Information" style="margin-bottom: 30px;">
+					<p:panelGrid columns="1" style="width:900px; border-style: hidden !important;">
+						<p:row>
+							<div class="ui-g">
+									<div class="ui-g-6">Device</div>
+									<div class="ui-g-6">
+										<p:outputLabel value="#{customerDashboard.deviceError.device}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">Error Code</div>
+									<div class="ui-g-6">
+										<p:outputLabel value="#{customerDashboard.deviceError.errorCode}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">Category</div>
+									<div class="ui-g-6">
+										<p:outputLabel value="#{customerDashboard.deviceError.category}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">Maintenance Level</div>
+									<div class="ui-g-6">
+										<p:outputLabel value="#{customerDashboard.deviceError.maintenanceLevel}" />
+									</div>
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-6">Priority</div>
+									<div class="ui-g-6">
+										<p:outputLabel value="#{customerDashboard.deviceError.priority}" />
+									</div>
+								</div>
+						</p:row>
+						<p:row>
+							<h:outputLabel value="Description:" for="errorDesc" />
+							<p:panel style="border-style: hidden !important;">
+								<h:outputText id="errorDesc" value="#{customerDashboard.deviceError.description}" />
+							</p:panel>
+						</p:row>
+						<p:row>
+							<h:outputLabel value="Troubleshoot Suggestion:" for="errorTroubleshoot" />
+							<p:panel style="border-style: hidden !important;">
+								<h:outputText id="errorTroubleshoot" value="#{fn:replace(customerDashboard.deviceError.troubleshootingSuggestion,'\\n','&lt;br/&gt;')}" escape="false" />
+							</p:panel>
+							
+						</p:row>
+					</p:panelGrid>
+				</p:fieldset>
+				<center>
+					<p:commandButton value="Close" style="width:100px" oncomplete="PF('deviceErrorPanel').hide()" />
+				</center>
+			</p:overlayPanel>
+			<p:dataTable id="tSummaryTbl" var="itm" value="#{customerDashboard.terminalOverviewSummaryList}" style="margin:50px">
+				<p:column style="width:16px">
+					<p:rowToggler />
+				</p:column>
+				<p:column headerText="Terminal" style="text-align:center;">
+					<h:outputText value="#{itm.terminal}" styleClass="#{itm.hasProblem ?'blinkItRed' : 'colorItGreen'}" />
+				</p:column>
+				<p:column headerText="Branch">
+					<h:outputText value="#{itm.branch}" />
+				</p:column>
+				<p:column headerText="Status">
+					<h:outputText value="#{itm.onlineStatus}" />
+				</p:column>
+				<p:column headerText="Connection">
+					<h:outputText value="#{itm.connectionStatus ? 'Connected' : 'Disconnected'}" />
+				</p:column>
+				<p:column headerText="Last Seen">
+					<h:outputText value="#{itm.terminalOverview.lastSeen}" />
+				</p:column>
+				<p:column style="width:70px" headerText="Terminal Info">
+					<p:commandButton value="Show" action="#{customerDashboard.showTerminalInfo(itm.terminal)}" update=":monitorform:tInfoPanelDisp" oncomplete="PF('terminalInfoPanel').show()" />
+				</p:column>
+				<p:column style="width:70px;text-align:center;" headerText="Control">
+					<p:link outcome="vtm_jobs.xhtml?faces-redirect=true" value="Go" style="color: SteelBlue;text-decoration: none;">
+						<f:param name="terminalId" value="#{itm.terminal}" />
+					</p:link>
+				</p:column>
+				<p:rowExpansion>
+					<p:panelGrid columns="4" columnClasses="alignTop,alignTop,alignTop,alignTop" style="width:auto; margin-top: 20px; margin-bottom: 50px;">
+						<p:dataList id="eventList" widgetVar="eventList" value="#{itm.terminalOverview.terminalEventUIList}" var="evtData" paginator="true" rows="9" styleClass="paginated" itemStyleClass="" style="width:500px !important;">
+							<f:facet name="header">Events</f:facet>
+							<p:spacer width="10" height="25" />
+							<h:outputText value="&#160;[#{evtData.eventTimestamp}]&#160;&#160;" />
+							<h:outputText value="#{evtData.eventType}&#160;&#160;&#160;" />
+						</p:dataList>
+						<p:dataTable id="statusList" widgetVar="statusList" value="#{itm.terminalOverview.deviceStatusUIList}" var="itmData" tableStyle="width:300px">
+							<f:facet name="header">Device Online Status</f:facet>
+							<p:column headerText="Device" width="248px;">
+								<h:outputText value="#{itmData.device}" />
+							</p:column>
+							<p:column headerText="Status" width="50px;">
+								<h:outputText value="#{itmData.status}" styleClass="#{(itmData.status eq 'Online') or (itmData.status eq 'Present') ? 'colorItGreen' : 'colorItRed'}" />
+							</p:column>
+						</p:dataTable>
+
+
+						<p:panelGrid columns="1" styleClass="noBorders"
+							style="width:auto;">
+							<p:row>
+								<p:dataTable id="cashTable" widgetVar="cashTable" value="#{itm.terminalOverview.cashDispenser.cassettes}" var="itmData" tableStyle="width:auto">
+									<f:facet name="header">Cash Count</f:facet>
+									<p:column headerText="Cash Amount">
+										<h:outputText value="#{itmData.denomination}" />
+									</p:column>
+									<p:column headerText="Count">
+										<h:outputText value="#{itmData.level}" styleClass="#{itmData.level eq '0'? 'colorItRed': 'colorItBlack'}" />
+									</p:column>
+								</p:dataTable>
+							</p:row>
+							<p:row>
+								<p:dataTable id="coinTable" widgetVar="coinTable" value="#{itm.terminalOverview.coinDispenser.hoppers}" var="itmData" tableStyle="width:auto">
+									<f:facet name="header">Coin Count</f:facet>
+									<p:column headerText="Coin Amount">
+										<h:outputText value="#{itmData.denomination}" />
+									</p:column>
+									<p:column headerText="Count">
+										<h:outputText value="#{itmData.level}" styleClass="#{itmData.level eq '0'? 'colorItRed': 'colorItBlack'}" />
+									</p:column>
+								</p:dataTable>
+							</p:row>
+						</p:panelGrid>
+						<p:panelGrid columns="1" styleClass="noBorders" style="width:auto;">
+						<p:row>
+								<h:outputLabel value="Last Seen:   " for="last-seen"/>
+								<h:outputText id="last-seen" value="#{itm.terminalOverview.lastSeen}" styleClass="#{itm.terminalOverview.commStatus ? 'colorItGreen': 'colorItRed'}" />
+							</p:row>
+							<p:row>
+								<p:outputPanel rendered="#{itm.terminalOverview.commStatus}">
+									<div id="heart-rate-alive" class="heart-rate">
+										<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100px" height="50px" viewBox="0 0 100 50" enable-background="new 0 0 100 50" xml:space="preserve">
+											<polyline fill="none" stroke="#32CD32" stroke-width="2" stroke-miterlimit="10" points="0, 25, 20 25, 25 15, 31 25, 40 25, 43 40, 50 0, 58 50, 60 25, 73 25, 78 18, 82 36, 85 25, 100 25" />
+										</svg>
+										<div class="fade-in"></div>
+										<div class="fade-out"></div>
+									</div>
+								</p:outputPanel>
+							</p:row>
+							<p:row>
+								<p:outputPanel rendered="#{!itm.terminalOverview.commStatus}">
+									<div id="heart-rate-expired" class="heart-rate">
+												<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100px" height="50px" viewBox="0 0 100 50" enable-background="new 0 0 100 50" xml:space="preserve">
+													<line x1="0" y1="25" x2="100" y2="25" stroke="#FF0000" stroke-width="2" />
+												</svg>
+												<div class="fade-in"></div>
+												<div class="fade-out"></div>
+											</div>
+								</p:outputPanel>
+							</p:row>
+							<p:row>
+								<p:dataTable id="errorList" widgetVar="errorList" value="#{itm.terminalOverview.unresolvedErrorCodeList}" var="itmData" tableStyle="width:auto">
+									<f:facet name="header">Open Errors</f:facet>
+									<p:column headerText="Device" width="200px;">
+										<h:outputText value="#{itmData.device}" />
+									</p:column>
+									<p:column headerText="Error">
+										<p:commandLink styleClass="colorItRed" style="color:red" value="#{itmData.errorCode}" oncomplete="PF('deviceErrorPanel').show()" action="#{customerDashboard.showErrorInfo(itmData.errorCode)}"></p:commandLink>
+									</p:column>
+								</p:dataTable>
+							</p:row>							
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:rowExpansion>
+			</p:dataTable>
+
+
+
+		</h:form>
+	<!-- </div> -->
+	</ui:define>
+
+</ui:composition>

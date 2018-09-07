@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	
+	<h:form>
+	<p:toolbar  >
+		<f:facet name="left">
+			<p:commandButton type="button" title="current user"
+				icon="fa fa-user-circle-o" />
+			<h:outputLabel>&#160;&#160;&#160;Logged User: #{authenticateUser.username}</h:outputLabel>
+			<h:outputText></h:outputText>
+			<span class="ui-separator"> <span
+				class="ui-icon ui-icon-grip-dotted-vertical" />
+			</span>
+
+		</f:facet>
+
+		<f:facet name="right">
+			<h:form>
+				<p:commandButton value="Sign Out" action="#{authenticateUser.logout}" icon="fa fa-power-off" />
+			</h:form>
+		</f:facet>
+
+	</p:toolbar>
+	</h:form>
+</ui:composition>

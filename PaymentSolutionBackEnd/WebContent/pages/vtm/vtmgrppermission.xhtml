@@ -1,0 +1,104 @@
+<ui:composition template="/WEB-INF/templates/mainlayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="content">
+		<h:form id="permissionform">
+			<p:growl id="notif" life="2000" />
+				<p:panelGrid  styleClass="noBorders" columns="1">
+					
+					<p:outputLabel>Manage Group Permission</p:outputLabel>
+					<p:panelGrid columns="2" styleClass="noBorders" style="margin:10px;">
+						<p:dataTable id="grpTbl" value="#{grpPermission.customerGroup}" var="grp" rowKey="#{grp}" selectionMode="single" selection="#{grpPermission.selectedUserGroup}"  update=":editPermissionForm:permissionTbl" style="width:300px; padding:5px">
+							<p:ajax event="rowSelect" update="grpTbl :permissionform:permissionTbl" listener="#{grpPermission.onSelect}"/>
+							
+							<p:column headerText="Group"><h:outputText value="#{grp.name}" /></p:column>
+							<f:facet name="footer" >
+								<!-- <p:commandButton value="Show" update=":permissionform:permissionTbl" icon="ui-icon-search" action="#{grpPermission.onSelect}" /> -->
+								<p:commandButton id="newGrp" value="New" icon="ui-icon-plus" oncomplete="PF('newGrpDialog').show()"/>
+								<p:commandButton id="editGrp" value="Edit" icon="ui-icon-pencil" oncomplete="PF('editGrpDialog').show()" update=":editPermissionForm:grpNameTxtEdit" />
+							</f:facet>
+						</p:dataTable>
+
+					</p:panelGrid>
+			        
+			        <p:dataTable id="permissionTbl" var="perm" value="#{grpPermission.permissionList}" rowKey="#{perm.id}" style="margin:20px" >
+			        	<p:column headerText="Allow" style="width:40px; text-align:center;"><p:selectBooleanCheckbox value="#{perm.allowed}" /></p:column>
+			        	<p:column headerText="Permission"><h:outputText value="#{perm.permission}" /></p:column>
+			        	<p:column headerText="Description"><h:outputText value="#{perm.description}" /></p:column>
+			        </p:dataTable>
+			        
+			        <p:commandButton value="Update Permission" action="#{grpPermission.savePermissions}" />
+				</p:panelGrid>
+				
+		</h:form>
+		<h:form>
+			<p:overlayPanel id="newGrpDialog" widgetVar="newGrpDialog" modal="true" appendToBody="true" dynamic="true" dismissable="true" styleClass="overlayPanelGroup">
+				<p:outputPanel>
+					<p:panelGrid>
+						<f:facet name="header">Add New Group</f:facet>
+						<p:row>
+							<p:column>
+								<h:outputLabel for="grpNameTxtAdd" value="Group Name"/>
+							</p:column>
+							<p:column>
+								<p:inputText id="grpNameTxtAdd" value="#{grpPermission.selectedUserGroupName}" maxlength="20" required="true">
+									<p:ajax async="true" />
+								</p:inputText>
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column colspan="2">
+								<center>
+								<p:commandButton value="Save" style="width:100px" ajax="true" actionListener="#{grpPermission.saveNewGroup}" process="@this" immediate="true"  oncomplete="PF('newGrpDialog').hide()" update=":permissionform:grpTbl" />
+								<p:commandButton value="Cancel" style="width:100px" ajax="true" oncomplete="PF('newGrpDialog').hide()" process="@this" immediate="true" />
+								</center>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:outputPanel>	
+			</p:overlayPanel>
+			
+					
+		</h:form>
+		<h:form id="editPermissionForm">
+			<p:overlayPanel id="editGrpDialog" widgetVar="editGrpDialog" modal="true" appendToBody="true" dynamic="true" dismissable="true" styleClass="overlayPanelGroup">
+				<p:outputPanel>
+					<p:panelGrid>
+						<f:facet name="header">Edit Group</f:facet>
+						<p:row>
+							<p:column>
+								<h:outputLabel id="editGrpDialogBtnEdit"  for="grpNameTxtEdit" value="Group Name"/>
+							</p:column>
+							<p:column>
+								<p:inputText id="grpNameTxtEdit" value="#{grpPermission.selectedUserGroup.name}" maxlength="20" required="true">
+									<p:ajax async="true" />
+								</p:inputText>
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column colspan="2">
+								<center>
+								<p:commandButton value="Update" style="width:100px" ajax="true" action="#{grpPermission.updateGroup}"  process="@this" immediate="true" oncomplete="PF('editGrpDialog').hide()" update=":permissionform:grpTbl">
+								</p:commandButton>
+								<p:commandButton value="Cancel" style="width:100px" oncomplete="PF('editGrpDialog').hide()" />
+								</center>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:outputPanel>	
+			</p:overlayPanel>
+		
+		
+		</h:form>		
+		
+	</ui:define>
+
+</ui:composition>

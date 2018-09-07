@@ -1,0 +1,120 @@
+<ui:composition template="/WEB-INF/templates/mainlayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<!-- 
+	<ui:define name="side-menu">
+		<ui:include src="/WEB-INF/includes/menu/vtm_customer_menu.xhtml" />
+	</ui:define>
+ -->
+	<ui:define name="content">
+		
+		
+		<h:form id="dbform">
+			<pe:fluidGrid id="fgrid" resizeBound="false" hGutter="20" widgetVar="fluidGridWdgt">
+				<c:forEach var="itm" items="#{customerDashboard.terminalOverviewList}">
+					<pe:fluidGridItem>
+						<p:panelGrid columns="4" columnClasses="alignTop,alignTop,alignTop,alignTop">
+							<f:facet name="header">
+					       		#{itm.terminal}
+					    	</f:facet>
+							<p:dataList id="eventList"  widgetVar="statusList" value="#{itm.terminalEventUIList}" var="evtData" paginator="true" rows="9" styleClass="paginated" itemStyleClass="" style="width: 500px">
+									<f:facet name="header">Events</f:facet>
+									<p:spacer width="10" height="25" />
+									<h:outputText value="&#160;[#{evtData.eventTimestamp}]&#160;&#160;" />
+									<h:outputText value="#{evtData.eventType}&#160;&#160;&#160;" />
+							</p:dataList>
+							<p:dataTable id="statusList" widgetVar="statusList" value="#{itm.deviceStatusUIList}" var="itmData" tableStyle="width:auto">
+								<f:facet name="header">Device Online Status</f:facet>
+								<p:column headerText="Device">
+									<h:outputText value="#{itmData.device}" />
+								</p:column>
+								<p:column headerText="Status">
+									<h:outputText value="#{itmData.status}" styleClass="#{(itmData.status eq 'Online') or (itmData.status eq 'Present')? 'colorItGreen': 'blinkItRed'}" />
+								</p:column>
+							</p:dataTable>
+							<p:panelGrid columns="1" styleClass="noBorders">
+								<p:row>
+									<p:dataTable id="cashTable" value="#{itm.cashDispenser.cassettes}" var="itmData" tableStyle="width:auto">
+										<f:facet name="header">Cash Count</f:facet>
+										<p:column headerText="Cash Amount">
+											<h:outputText value="#{itmData.denomination}" />
+										</p:column>
+										<p:column headerText="Count">
+											<h:outputText value="#{itmData.level}" styleClass="#{itmData.level eq '0'? 'blinkItRed': 'colorItBlack'}" />
+										</p:column>
+									</p:dataTable>
+								</p:row>
+								<p:row>
+									<p:dataTable id="coinTable" value="#{itm.coinDispenser.hoppers}" var="itmData" tableStyle="width:auto">
+										<f:facet name="header">Coin Count</f:facet>
+										<p:column headerText="Coin Amount">
+											<h:outputText value="#{itmData.denomination}" />
+										</p:column>
+										<p:column headerText="Count">
+											<h:outputText value="#{itmData.level}" styleClass="#{itmData.level eq '0'? 'blinkItRed': 'colorItBlack'}"/>
+										</p:column>
+									</p:dataTable>
+								</p:row>
+							</p:panelGrid>
+								<p:panelGrid columns="1" styleClass="noBorders" >
+									<p:row>
+										<p:dataTable id="errorList" value="#{itm.unresolvedErrorCodeList}" var="itmData" tableStyle="width:auto">
+											<f:facet name="header">Open Errors</f:facet>
+											<p:column headerText="Device">
+												<h:outputText value="#{itmData.device}" />
+											</p:column>
+											<p:column headerText="Error">
+												<h:outputText value="#{itmData.errorCode}"  styleClass="blinkItRed"/>
+											</p:column>
+										</p:dataTable>
+									</p:row>
+									<p:row>
+										<p:panel>
+											<f:facet name="header">Connection to PIE Servers</f:facet>
+											<p:outputPanel id="opnl-alive">
+												<c:if test="#{itm.commStatus}">
+													<div id="heart-rate-alive" class="heart-rate">
+															<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100px" height="50px" viewBox="0 0 100 50" enable-background="new 0 0 100 50" xml:space="preserve">
+																	<polyline fill="none" stroke="#32CD32" stroke-width="2" stroke-miterlimit="10" points="0, 25, 20 25, 25 15, 31 25, 40 25, 43 40, 50 0, 58 50, 60 25, 73 25, 78 18, 82 36, 85 25, 100 25" />
+																</svg>
+															<div class="fade-in"></div>
+															<div class="fade-out"></div>
+														</div>
+												</c:if>
+											</p:outputPanel>
+											<p:outputPanel id="opnl-expired">
+												<c:if test="#{!itm.commStatus}">
+													<div id="heart-rate-expired" class="heart-rate">
+																<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100px" height="50px" viewBox="0 0 100 50" enable-background="new 0 0 100 50" xml:space="preserve">
+																		<line x1="0" y1="25" x2="100" y2="25" stroke="#FF0000" stroke-width="2" />
+																	</svg>
+																<div class="fade-in"></div>
+																<div class="fade-out"></div>
+															</div>
+												</c:if>
+											</p:outputPanel>
+										</p:panel>
+									</p:row>
+									<p:row>
+										<h:outputText value="Last Seen:"/>
+										<br/>
+										<h:outputText id="last-seen" value="#{itm.lastSeen}" styleClass="#{itm.commStatus ? 'colorItGreen': 'blinkItRed'}"/>
+									</p:row>
+								</p:panelGrid>
+						</p:panelGrid>
+						<br/>
+					</pe:fluidGridItem>
+				</c:forEach>
+			</pe:fluidGrid>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

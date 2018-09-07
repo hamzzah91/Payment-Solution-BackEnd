@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+      http://www.springframework.org/schema/beans 
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/tx 
+      http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://www.springframework.org/schema/context 
+      http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="dbService" class="com.omnia.pie.cm.services.DBService" />
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="com.omnia.pie.cm.data.model"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="showSql" value="${hibernate.show_sql}"/>
+            </bean>
+        </property>
+        
+        <property name="jpaProperties">
+            <props>
+                <!-- prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop -->
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <!-- <prop key="net.sf.ehcache.configurationResourceName">/ehcache.xml</prop> -->
+                <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use.secondLevel}</prop>
+                <prop key="hibernate.cache.use_query_cache">${hibernate.cache.use.query_cache}</prop>
+                <prop key="hibernate.cache.use_structured_entries">${hibernate.cache.use_structured_entries}</prop>
+                <prop key="hibernate.generate_statistics">${hibernate.generate.statistics}</prop>
+                <prop key="hibernate.default_batch_fetch_size">${hibernate.default_batch_fetch_size}</prop>
+           		<prop key="hibernate.max_fetch_depth">${hibernate.max_fetch_depth}</prop>
+           		<prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
+           		<prop key="hibernate.legacy_limit_handler">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.user}"/>
+        <property name="password" value="#{dbService.getPassword()}"/>
+        <property name="acquireIncrement" value="${jdbc.acquireIncrement}"/>
+        <property name="maxPoolSize" value="${jdbc.maxPoolSize}"/>
+        <property name="minPoolSize" value="${jdbc.minPoolSize}"/>
+        <property name="maxStatements" value="${jdbc.maxStatements}"/>
+        <property name="idleConnectionTestPeriod" value="${jdbc.idleConnectionTestPeriod}"/>
+        <property name="acquireRetryAttempts" value="${jdbc.acquireRetryAttempts}"/>
+        <property name="acquireRetryDelay" value="${jdbc.acquireRetryDelay}"/>      <!-- ms -->
+        <property name="checkoutTimeout" value="${jdbc.checkoutTimeout}"/>       <!-- ms -->
+        <property name="unreturnedConnectionTimeout" value="${jdbc.unreturnedConnectionTimeout}"/>
+        <property name="testConnectionOnCheckout" value="${jdbc.testConnectionOnCheckout}"/>
+        <property name="maxIdleTime" value="${jdbc.maxIdleTime}"/>
+        <property name="maxIdleTimeExcessConnections" value="${jdbc.maxIdleTimeExcessConnections}"/>
+        <property name="numHelperThreads" value="${jdbc.numHelperThreads}"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+    
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <bean id="persistenceExceptionTranslationPostProcessor" class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+
+    <!--Add your classes/packages in component-scan which need to be 'Transactional' -->
+    <context:component-scan base-package="com.omnia.pie.cm.data.access"/>
+    <context:component-scan base-package="com.omnia.pie.cm.data.model"/>
+    <context:component-scan base-package="com.omnia.pie.cm.services"/>
+    <context:component-scan base-package="com.omnia.pie.cm.ui.controller"/>
+    <context:component-scan base-package="com.omnia.pie.cm.ui.component"/>
+    <context:annotation-config/>
+
+	<!-- ******** BEGIN OF DAO BEANS (Please follow the alphabetical order) ******** -->
+	
+	<bean id="branchDao" class="com.omnia.pie.cm.data.access.BranchDAOImpl" />
+	<bean id="branchPermissionDirectoryDao" class="com.omnia.pie.cm.data.access.BranchPermissionDirectoryDAOImpl" />
+	<bean id="branchPermissionTypeDao" class="com.omnia.pie.cm.data.access.BranchPermissionTypeDAOImpl" />
+	<bean id="channelDao" class="com.omnia.pie.cm.data.access.ChannelDAOImpl" />
+	<bean id="channelPermissionDirectoryDao" class="com.omnia.pie.cm.data.access.ChannelPermissionDirectoryDAOImpl" />
+	<bean id="channelPermissionTypeDao" class="com.omnia.pie.cm.data.access.ChannelPermissionTypeDAOImpl" />
+	<bean id="customerDao" class="com.omnia.pie.cm.data.access.CustomerDAOImpl" />
+	<bean id="customerUsersDao" class="com.omnia.pie.cm.data.access.CustomerUsersDAOImpl" />
+	<bean id="customerPermissionDirectoryDao" class="com.omnia.pie.cm.data.access.CustomerPermissionDirectoryDAOImpl" />
+	<bean id="customerPermissionTypeDao" class="com.omnia.pie.cm.data.access.CustomerPermissionTypeDAOImpl" />
+	<bean id="smsOtpDao" class="com.omnia.pie.cm.data.access.SmsOtpDAOImpl" />
+	
+	<bean id="terminalInfoDao" class="com.omnia.pie.cm.data.access.TerminalInfoDAOImpl" />
+	<bean id="usaltDao" class="com.omnia.pie.cm.data.access.UsaltDAOImpl" />
+	<bean id="userHistoryDao" class="com.omnia.pie.cm.data.access.UserHistoryDAOImpl" />
+	<bean id="userGroupPermissionDirectoryDao" class="com.omnia.pie.cm.data.access.UserGroupPermissionDirectoryDAOImpl" />
+	<bean id="userGroupPermissionTypeDao" class="com.omnia.pie.cm.data.access.UserGroupPermissionTypeDAOImpl" />
+	<bean id="userGroupDao" class="com.omnia.pie.cm.data.access.UserGroupDAOImpl" />	
+	<bean id="userPermissionDirectoryDao" class="com.omnia.pie.cm.data.access.UserPermissionDirectoryDAOImpl" />
+	<bean id="userPermissionTypeDao" class="com.omnia.pie.cm.data.access.UserPermissionTypeDAOImpl" />
+	<bean id="usersDao" class="com.omnia.pie.cm.data.access.UsersDAOImpl" />
+	<bean id="userInfoDao" class="com.omnia.pie.cm.data.access.UserInfoDAOImpl" />
+	
+</beans>

@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+		<p:panelMenu>
+			<p:submenu label="Terminals">
+				<p:menuitem value="Dashboard" icon="fa fa-area-chart"
+					outcome="dashboard.xhtml?faces-redirect=true" ajax="false"
+					style="line-height:40px" />
+				<c:forEach var="itm" items="#{customerMenuVtm.terminals}">
+					<p:menuitem value="#{itm}" icon="fa fa-chevron-circle-right"
+						outcome="vtmterminal.xhtml?faces-redirect=true" ajax="false">
+						<f:param name="terminalId" value="#{itm}" />
+					</p:menuitem>
+				</c:forEach>
+			</p:submenu>
+			 <p:submenu label="Terminal Management">
+				<p:menuitem value="Branch Onboarding" icon="fa fa-th-large" action="branch_onboarding.xhtml?faces-redirect=true" ajax="false" />
+				<p:menuitem value="Terminal Onboarding" icon="fa fa-train" action="terminal_onboarding.xhtml?faces-redirect=true" ajax="false" />
+				<p:menuitem value="Remote Deployment" icon="fa fa-upload" action="terminal_remote_deployment.xhtml?faces-redirect=true" ajax="false" />
+			</p:submenu>
+			<p:submenu label="Task Management">
+				<!-- <p:menuitem value="Assets And Contents" icon="fa fa-table" action="contents.xhtml?faces-redirect=true" ajax="false" /> -->
+				<p:menuitem value="E Journal" icon="fa fa-newspaper-o" action="ej.xhtml?faces-redirect=true" ajax="false" />
+				<p:menuitem value="Anti Skimming" icon="fa fa-download" action="antiskimming.xhtml?faces-redirect=true" ajax="false" />
+
+				<p:menuitem value="Logs" icon="fa fa-archive" action="logs.xhtml?faces-redirect=true" ajax="false" />
+				<!-- <p:menuitem value="Advertisements" icon="fa fa-bookmark-o" action="advert.xhtml?faces-redirect=true" ajax="false"/>
+				<p:menuitem value="Scheduled Jobs" icon="fa fa-calendar-check-o" action="schedules.xhtml?faces-redirect=true" ajax="false"/>
+				<p:menuitem value="Personalization" icon="fa fa-vcard-o" action="personalization.xhtml?faces-redirect=true" ajax="false"/> 
+				 -->
+			</p:submenu>
+			
+			<p:submenu label="User Management">
+				<p:menuitem value="Users" icon="fa fa-user-plus" action="vtmusermanagement.xhtml?faces-redirect=true" ajax="false"/>
+				<p:menuitem value="Group Permission" icon="fa fa-users" action="vtmgrppermission.xhtml?faces-redirect=true" ajax="false"/>
+			</p:submenu>
+			
+			<p:submenu label="Emails">
+				<p:menuitem value="Mapping" icon="fa fa-th-list" action="email_mapping.xhtml?faces-redirect=true" ajax="false"/>
+				<p:menuitem value="Recipient" icon="fa fa-address-book" action="email_recipient.xhtml?faces-redirect=true" ajax="false"/>
+				<p:menuitem value="Sender" icon="fa fa-address-book-o" action="email_sender.xhtml?faces-redirect=true" ajax="false"/>
+				<p:menuitem value="Template" icon="fa fa-map-o" action="email_template.xhtml?faces-redirect=true" ajax="false"/>
+				<p:menuitem value="Type Code" icon="fa fa-fax" action="email_typecode.xhtml?faces-redirect=true" ajax="false"/>
+			</p:submenu>	
+			<p:submenu label="Reports">
+				<p:menuitem value="Frequency" icon="fa fa-bar-chart" action="frequency_report.xhtml?faces-redirect=true" ajax="false"/>
+				<p:menuitem value="Current State" icon="fa fa-bar-chart" action="current_state_report.xhtml?faces-redirect=true" ajax="false"/>
+			
+			</p:submenu>		
+			<!-- 
+			<p:submenu label="Deployments">
+				<p:menuitem value="Onboarding" icon="fa fa-cubes" />
+				<p:menuitem value="Create Settings" icon="fa fa-gear" />
+			</p:submenu>
+			<p:submenu label="Manage Keys">
+			</p:submenu>
+			<p:submenu label="Reports">
+			</p:submenu>
+			 -->
+		</p:panelMenu>
+	</h:form>
+</ui:composition>

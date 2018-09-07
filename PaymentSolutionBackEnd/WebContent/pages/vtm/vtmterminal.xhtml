@@ -1,0 +1,566 @@
+<ui:composition template="/WEB-INF/templates/mainlayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<!-- 
+	<ui:define name="side-menu">
+		<ui:include src="/WEB-INF/includes/menu/vtm_customer_menu.xhtml" />
+	</ui:define>
+ -->
+	<ui:define name="content">
+		<h:form>
+			<p:fieldset legend="Terminal Information" style="margin-bottom: 30px;">
+				<p:panelGrid columns="3"  style="width:100%; border-style: hidden !important;">
+					<p:column style="width:50%;">
+						<p:panel>
+							<div class="ui-g">
+							    <div class="ui-g-6">Terminal Id</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.terminalId}"/></div>
+							</div>
+							<div class="ui-g">
+							    <div class="ui-g-6">Branch Id</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.branchId}"/></div>
+							</div>
+							<div class="ui-g">
+							    <div class="ui-g-6">Currency Code</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.currencyCode}"/></div>
+							</div>
+							<div class="ui-g">
+							    <div class="ui-g-6">Merchant Id</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.merchantId}"/></div>
+							</div>
+							<div class="ui-g">
+							    <div class="ui-g-6">Acquirer Institution Id</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.acquirerInstitutionId}"/></div>
+							</div>
+							<div class="ui-g">
+							    <div class="ui-g-6">Machine Model No</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.modelNo}"/></div>
+							</div>
+							<div class="ui-g">
+							    <div class="ui-g-6">Machine Serial No</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.machineSerialNo}"/></div>
+							</div>
+							<div class="ui-g">
+							    <div class="ui-g-6">Application Version</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.applicationVersion}"/></div>
+							</div>							
+						</p:panel>
+					</p:column>
+					<h:column style="width:50%;">
+						<p:panel>
+							<div class="ui-g">
+							    <div class="ui-g-6">Caller Id</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.callerId}"/></div>
+							</div>
+							<div class="ui-g">
+							    <div class="ui-g-6">Access Code</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.accessCode}"/></div>
+							</div>
+							<div class="ui-g">
+							    <div class="ui-g-6">Location</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.location}"/></div>
+							</div>
+							<div class="ui-g">
+							    <div class="ui-g-6">City</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.city}"/></div>
+							</div>
+							<div class="ui-g">
+							    <div class="ui-g-6">State/Emirate</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.state}"/></div>
+							</div>
+							<div class="ui-g">
+							    <div class="ui-g-6">IP Address</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.ipAddress}"/></div>
+							</div>
+							<div class="ui-g">
+							    <div class="ui-g-6">Nat IP Address</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.natIpAddress}"/></div>
+							</div>
+							<div class="ui-g">
+							    <div class="ui-g-6">Physical Address</div>
+							    <div class="ui-g-6"><p:outputLabel value="#{terminalVtm.terminalInfo.physicalAddress}"/></div>
+							</div>
+						</p:panel>
+					</h:column>
+				</p:panelGrid>
+			</p:fieldset>
+			<p:fieldset legend="Terminal Devices" style="margin-bottom: 30px;">
+				<p:panel style="text-align: center; border: none;">
+					<div class="ui-g">
+						<div class="ui-g-4">
+							<p:panel header="Cash Dispenser">
+								<p:panelGrid
+									style="width:100%; border-style: hidden !important;">
+									<p:row>
+										<p:column>Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.deviceStatuses.get('CashDispenser') eq 'Online'? 'green': 'red'}"
+												value="#{terminalVtm.deviceStatuses.get('CashDispenser')}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<h4>Cassettes</h4>
+										<c:forEach var="item"
+											items="#{terminalVtm.terminalOverview.cashDispenser.cassettes}">
+											<c:if test="#{not empty item.level}">
+							
+							 Cassette:  <p:outputLabel value="#{item.name}" />
+												<!-- 	 Type:  <p:outputLabel value="#{item.type}"/> -->
+
+												<p:progressBar value="#{(item.level/3000)*100}"
+													labelTemplate="#{item.level}" displayOnly="true" />
+											</c:if>
+										</c:forEach>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:panel>
+						</div>
+						<div class="ui-g-4">
+							<p:panel header="Cash Acceptor">
+								<p:panelGrid
+									style="width:100%; border-style: hidden !important;">
+									<p:row>
+										<p:column>Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.deviceStatuses.get('CashAcceptor') eq 'Online'? 'green': 'red'}"
+												value="#{terminalVtm.deviceStatuses.get('CashAcceptor')}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<h4>Cassettes</h4>
+										<c:forEach var="item"
+											items="#{terminalVtm.terminalOverview.cashAcceptor.cassettes}">
+											<c:if test="#{not empty item.level}">
+							 Cassette:  <p:outputLabel value="#{item.name}" />
+												<!-- 	 Type:  <p:outputLabel value="#{item.type}"/> -->
+
+												<p:progressBar value="#{(item.level/3000)*100}"
+													labelTemplate="#{item.level}" displayOnly="true" />
+											</c:if>
+										</c:forEach>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+										</p:column>
+									</p:row>
+
+								</p:panelGrid>
+							</p:panel>
+						</div>
+						<div class="ui-g-4">
+							<p:panel header="Cheque Acceptor">
+								<p:panelGrid
+									style="width:100%; border-style: hidden !important;">
+									<p:row>
+										<p:column>Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.deviceStatuses.get('ChequeAcceptor') eq 'Online'? 'green': 'red'}"
+												value="#{terminalVtm.deviceStatuses.get('ChequeAcceptor')}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>Ink Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.terminalOverview.chequeDevice.inkStatus eq 'FULL'? 'green': 'red'}"
+												value="#{terminalVtm.terminalOverview.chequeDevice.inkStatus}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<h4>Cassettes</h4>
+										<c:forEach var="item"
+											items="#{terminalVtm.terminalOverview.chequeDevice.cassettes}">
+											<c:if test="#{not empty item.level}">
+							 Cassette:  <p:outputLabel value="#{item.name}" />
+												<!-- 	 Type:  <p:outputLabel value="#{item.type}"/> -->
+												<p:progressBar value="#{(item.level/3000)*100}"
+													labelTemplate="#{item.level}" displayOnly="true" />
+											</c:if>
+										</c:forEach>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:panel>
+						</div>
+					</div>
+					<div class="ui-g">
+
+						<div class="ui-g-4">
+							<p:panel header="Coin Dispenser">
+								<p:panelGrid
+									style="width:100%; border-style: hidden !important;">
+									<p:row>
+										<p:column>Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.deviceStatuses.get('CoinDispenser') eq 'Online'? 'green': 'red'}"
+												value="#{terminalVtm.deviceStatuses.get('CoinDispenser')}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<h4>Hoppers</h4>
+										<c:forEach var="item"
+											items="#{terminalVtm.terminalOverview.coinDispenser.hoppers}">
+											<c:if test="#{not empty item.level}">
+							 Cassette:  <p:outputLabel value="#{item.name}" />
+												<!-- 	 Type:  <p:outputLabel value="#{item.type}"/> -->
+												<p:progressBar value="#{(item.level/300)*100}"
+													labelTemplate="#{item.level}" displayOnly="true" />
+											</c:if>
+										</c:forEach>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:panel>
+						</div>
+						<div class="ui-g-4">
+							<p:panel header="Card Dispenser">
+								<p:panelGrid
+									style="width:100%; border-style: hidden !important;">
+									<p:row>
+										<p:column>Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.deviceStatuses.get('CardDispenser') eq 'Online'? 'green': 'red'}"
+												value="#{terminalVtm.deviceStatuses.get('CardDispenser')}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:panel>
+						</div>
+					<!-- 	<div class="ui-g-4">
+							<p:panel header="Camera">
+								<p:panelGrid
+									style="width:100%; border-style: hidden !important;">
+									<p:row>
+										<p:column>Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.termianlDeviceStatus.cameraDevice.status eq 'Online'? 'green': 'red'}"
+												value="#{terminalVtm.termianlDeviceStatus.cameraDevice.status}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:panel>
+						</div> -->
+
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-4">
+							<p:panel header="Card Reader">
+								<p:panelGrid
+									style="width:100%; border-style: hidden !important;">
+									<p:row>
+										<p:column>Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.deviceStatuses.get('CardReader') eq 'Online'? 'green': 'red'}"
+												value="#{terminalVtm.deviceStatuses.get('CardReader')}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:panel>
+						</div>
+						<div class="ui-g-4">
+							<p:panel header="Pinpad">
+								<p:panelGrid
+									style="width:100%; border-style: hidden !important;">
+									<p:row>
+										<p:column>Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.deviceStatuses.get('PinPad') eq 'Online'? 'green': 'red'}"
+												value="#{terminalVtm.deviceStatuses.get('PinPad')}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:panel>
+						</div>
+
+						<div class="ui-g-4">
+							<p:panel header="Signature Capture">
+								<p:panelGrid
+									style="width:100%; border-style: hidden !important;">
+									<p:row>
+										<p:column>Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.deviceStatuses.get('SignpadScanner') eq 'Online'? 'green': 'red'}"
+												value="#{terminalVtm.deviceStatuses.get('SignpadScanner')}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:panel>
+						</div>
+					</div>
+					<div class="ui-g">
+						<div class="ui-g-4">
+							<p:panel header="Receipt Printer">
+								<p:panelGrid
+									style="width:100%; border-style: hidden !important;">
+									<p:row>
+										<p:column>Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.deviceStatuses.get('ReceiptPrinter') eq 'Online'? 'green': 'red'}"
+												value="#{terminalVtm.deviceStatuses.get('ReceiptPrinter')}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>Ink Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.terminalOverview.receiptPrinter.inkStatus eq 'FULL'? 'green': 'red'}"
+												value="#{terminalVtm.terminalOverview.receiptPrinter.inkStatus}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:panel>
+						</div>
+						<div class="ui-g-4">
+							<p:panel header="Journal Printer">
+								<p:panelGrid
+									style="width:100%; border-style: hidden !important;">
+									<p:row>
+										<p:column>Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.deviceStatuses.get('JournalPrinter') eq 'Online'? 'green': 'red'}"
+												value="#{terminalVtm.deviceStatuses.get('JournalPrinter')}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>Ink Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.terminalOverview.journalPrinter.inkStatus eq 'FULL'? 'green': 'red'}"
+												value="#{terminalVtm.terminalOverview.journalPrinter.inkStatus}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:panel>
+						</div>
+						<div class="ui-g-4">
+							<p:panel header="Statement Printer">
+								<p:panelGrid
+									style="width:100%; border-style: hidden !important;">
+									<p:row>
+										<p:column>Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.deviceStatuses.get('StatementPrinter') eq 'Online'? 'green': 'red'}"
+												value="#{terminalVtm.deviceStatuses.get('StatementPrinter')}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>Ink Status</p:column>
+										<p:column>
+											<p:outputLabel
+												style="color: #{terminalVtm.terminalOverview.statementPrinter.inkStatus eq 'FULL'? 'green': 'red'}"
+												value="#{terminalVtm.terminalOverview.statementPrinter.inkStatus}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:panel>
+						</div>
+					</div>
+					<!-- 
+					<div class="ui-g">
+						<div class="ui-g-4">
+					    	<p:panel header="Emirates ID Scanner">
+					    		<p:panelGrid style="width:100%; border-style: hidden !important;">
+						    		<p:row>
+						    			<p:column>Status</p:column>
+						    			<p:column><p:outputLabel style="color: #{terminalVtm.termianlDeviceStatus.idScannerDevice.status eq 'Online'? 'green': 'red'}" value="#{terminalVtm.termianlDeviceStatus.idScannerDevice.status}"/></p:column>
+						    		</p:row>
+						    		<p:row>
+						    			<p:column colspan="2">
+						    			</p:column>
+						    		</p:row>
+					    		</p:panelGrid>
+					    	</p:panel>
+						</div>
+					    <div class="ui-g-4">
+					    	<p:panel header="A4 Scanner">
+					    		<p:panelGrid style="width:100%; border-style: hidden !important;">
+						    		<p:row>
+						    			<p:column>Status</p:column>
+						    			<p:column><p:outputLabel style="color: #{terminalVtm.termianlDeviceStatus.a4ScannerDevice.status eq 'Online'? 'green': 'red'}" value="#{terminalVtm.termianlDeviceStatus.a4ScannerDevice.status}"/></p:column>
+						    		</p:row>
+						    		<p:row>
+						    			<p:column colspan="2">
+						    			</p:column>
+						    		</p:row>
+					    		</p:panelGrid>
+					    	</p:panel>
+						</div>
+						<div class="ui-g-4">
+					    	<p:panel header="VDM">
+					    		<p:panelGrid style="width:100%; border-style: hidden !important;">
+						    		<p:row>
+						    			<p:column>Status</p:column>
+						    			<p:column><p:outputLabel style="color: #{terminalVtm.termianlDeviceStatus.vdmDevice.status eq 'Online'? 'green': 'red'}" value="#{terminalVtm.termianlDeviceStatus.vdmDevice.status}"/></p:column>
+						    		</p:row>
+						    		<p:row>
+						    			<p:column colspan="2">
+						    			</p:column>
+						    		</p:row>
+					    		</p:panelGrid>
+					    	</p:panel>
+						</div>
+					</div>
+					 -->
+					<!-- 
+					<div class="ui-g">
+					    <div class="ui-g-4">
+					    	<p:panel header="Doors">
+					    		<p:panelGrid style="width:100%; border-style: hidden !important;">
+						    		<p:row>
+						    			<p:column>Status</p:column>
+						    			<p:column><p:outputLabel style="color: #{terminalVtm.termianlDeviceStatus.doorDevice.status eq 'Online'? 'green': 'red'}" value="#{terminalVtm.termianlDeviceStatus.doorDevice.status}"/></p:column>
+						    		</p:row>
+						    		<p:row>
+						    			<p:column colspan="2">
+						    			</p:column>
+						    		</p:row>
+					    		</p:panelGrid>
+					    	</p:panel>
+						</div>
+					    <div class="ui-g-4">
+					    	<p:panel header="Sensory">
+					    		<p:panelGrid style="width:100%; border-style: hidden !important;">
+						    		<p:row>
+						    			<p:column>Status</p:column>
+						    			<p:column><p:outputLabel style="color: #{terminalVtm.termianlDeviceStatus.sensorDevice.status eq 'Online'? 'green': 'red'}" value="#{terminalVtm.termianlDeviceStatus.sensorDevice.status}"/></p:column>
+						    		</p:row>
+						    		<p:row>
+						    			<p:column colspan="2">
+						    			</p:column>
+						    		</p:row>
+					    		</p:panelGrid>
+					    	</p:panel>
+						</div>
+					    <div class="ui-g-4">
+					    	<p:panel header="Vandalism">
+					    		<p:panelGrid style="width:100%; border-style: hidden !important;">
+						    		<p:row>
+						    			<p:column>Status</p:column>
+						    			<p:column><p:outputLabel style="color: #{terminalVtm.termianlDeviceStatus.vandalDevice.status eq 'Online'? 'green': 'red'}" value="#{terminalVtm.termianlDeviceStatus.vandalDevice.status}"/></p:column>
+						    		</p:row>
+						    		<p:row>
+						    			<p:column colspan="2">
+						    			</p:column>
+						    		</p:row>
+					    		</p:panelGrid>
+					    	</p:panel>
+						</div>
+					</div>
+					<div class="ui-g">
+					    <div class="ui-g-4">
+					    	<p:panel header="Fingerprint Scanner">
+					    		<p:panelGrid style="width:100%; border-style: hidden !important;">
+						    		<p:row>
+						    			<p:column>Status</p:column>
+						    			<p:column><p:outputLabel style="color: #{terminalVtm.termianlDeviceStatus.fingerprintDevice.status eq 'Online'? 'green': 'red'}" value="#{terminalVtm.termianlDeviceStatus.fingerprintDevice.status}"/></p:column>
+						    		</p:row>
+						    		<p:row>
+						    			<p:column colspan="2">
+						    			</p:column>
+						    		</p:row>
+					    		</p:panelGrid>
+					    	</p:panel>
+						</div>
+					    <div class="ui-g-4">
+					    	<p:panel header="Barcode Scanner">
+					    		<p:panelGrid style="width:100%; border-style: hidden !important;">
+						    		<p:row>
+						    			<p:column>Status</p:column>
+						    			<p:column><p:outputLabel style="color: #{terminalVtm.termianlDeviceStatus.barcodeReaderDevice.status eq 'Online'? 'green': 'red'}" value="#{terminalVtm.termianlDeviceStatus.barcodeReaderDevice.status}"/></p:column>
+						    		</p:row>
+						    		<p:row>
+						    			<p:column colspan="2">
+						    			</p:column>
+						    		</p:row>
+					    		</p:panelGrid>
+					    	</p:panel>
+						</div>
+					    <div class="ui-g-4">
+					    	<p:panel header="GUID Lights">
+					    		<p:panelGrid style="width:100%; border-style: hidden !important;">
+						    		<p:row>
+						    			<p:column>Status</p:column>
+						    			<p:column><p:outputLabel style="color: #{terminalVtm.termianlDeviceStatus.guidLightsDevice.status eq 'Online'? 'green': 'red'}" value="#{terminalVtm.termianlDeviceStatus.guidLightsDevice.status}"/></p:column>
+						    		</p:row>
+						    		<p:row>
+						    			<p:column colspan="2">
+						    			</p:column>
+						    		</p:row>
+					    		</p:panelGrid>
+					    	</p:panel>
+						</div>
+						
+					</div>
+					 -->
+				</p:panel>
+
+
+			</p:fieldset>
+			<p:fieldset legend="Error History">
+				<p:panelGrid columns="4">
+				</p:panelGrid>
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

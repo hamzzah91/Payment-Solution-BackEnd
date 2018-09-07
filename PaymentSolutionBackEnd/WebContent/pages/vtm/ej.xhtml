@@ -1,0 +1,150 @@
+<ui:composition template="/WEB-INF/templates/mainlayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="content">
+		<h:form id="ejform">
+			<p:growl id="notif" life="2000" />
+			<p:dataTable id="settingsTable" var="ej" value="#{ejVtm.ejSettingsList}">
+				<f:facet name="header">EJ Upload Scheduling</f:facet>
+				<p:column headerText="Terminal" width="150" style="text-align: center;">
+					<h:outputText value="#{ej.terminal}" />
+				</p:column>
+
+				<p:column headerText="SFTP Path" style="text-align: center;">
+					<p:inputText value="#{ej.sftpPath}" size="90" style="border: none;" />
+				</p:column>
+				<p:column headerText="SFTP Port" style="text-align: center;">
+					<p:inputText value="#{ej.sftpPort}" size="90" style="border: none;" />
+				</p:column>
+				<p:column headerText="SFTP User" style="text-align: center;">
+					<p:inputText value="#{ej.sftpUser}" size="90" style="border: none;" />
+				</p:column>
+				<p:column headerText="SFTP Password" style="text-align: center;">
+					<p:password value="#{ej.sftpPassword}" size="90" redisplay="true" style="border: none;" />
+				</p:column>
+				<p:column headerText="Occurence" style="text-align: center;" width="120">
+					#{ej.occurence}
+				</p:column>
+
+				<p:column id="schedCol" headerText="Schedule Time" width="150" style="text-align: center;">
+					<!-- <pe:timePicker value="#{ej.uploadSchedule}" mode="popup" widgetVar="spinnerBtnTimeWidget"  showOn="button" label="Spinner time picker with button" styleClass="weight: 0.8;"/> -->
+					<!-- <p:calendar value="#{ej.uploadSchedule}" pattern="HH:mm:ss" timeOnly="true" stepMinute="5" stepSecond="5" timeControlType="select" /> -->
+					<!-- <p:inputText value="#{ej.uploadSchedule}" size="10" style="border: none;" /> -->
+					<p:calendar value="#{ej.uploadSchedule}" pattern="HH:mm:ss" timeOnly="true" stepMinute="5" stepSecond="5" timeControlType="select" showOn="false" size="10" />
+					<p:commandButton id="schedulePanelBtn" update=":ejform:scheduleDetail" oncomplete="PF('schedulePanel').show()" icon="fa fa-clock-o">
+						<f:setPropertyActionListener value="#{ej}" target="#{ejVtm.selectedTerminalEjSettings}" />
+					</p:commandButton>
+				</p:column>
+
+				<p:column headerText="Action" width="120" style="text-align: center;">
+					<p:commandButton ajax="true" value="Sync" action="#{ejVtm.sync(ej)}" update=":ejform:notif" />
+				</p:column>
+			</p:dataTable>
+
+			<p:overlayPanel id="schedulePanel" widgetVar="schedulePanel" showEffect="fade" dismissable="false" showCloseIcon="true" for="ejform:settingsTable:0:schedulePanelBtn" my="right top" at="left top">
+				<p:outputPanel id="scheduleDetail">
+					<p:panelGrid rendered="#{not empty ejVtm.selectedTerminalEjSettings}">
+						<f:facet name="header"> Update Schedule</f:facet>
+						<p:row>
+							<p:column>
+								<h:outputLabel for="frequency" value="Frequency"/>
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="frequency" value="#{ejVtm.selectedTerminalEjSettings.occurence}" >
+									<f:selectItem itemLabel="DAILY" itemValue="DAILY" />
+									<f:selectItem itemLabel="HOURLY" itemValue="HOURLY" />
+									<f:selectItem itemLabel="MINUTE INTERVAL" itemValue="MINUTES" />
+									<f:selectItem itemLabel="SECOND INTERVAL" itemValue="SECONDS" />
+									<p:ajax listener="#{ejVtm.occurencePropertyChanged}" update="ejform:hour ejform:minute ejform:second ejform:everyMinute ejform:everySecond ejform:everySecondLabel" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column>
+								<h:outputLabel for="hour" value="At Hour"/>
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="hour" value="#{ejVtm.selectedTerminalEjSettings.hours}" disabled="#{not ejVtm.dailySelected}">
+									<c:forEach varStatus="cnt" begin="0" end="23">
+										<f:selectItem itemLabel="#{cnt.index}" itemValue="#{cnt.index}" />
+									</c:forEach>
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column>
+								<h:outputLabel for="minute" value="At Minute"/>
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="minute" value="#{ejVtm.selectedTerminalEjSettings.minutes}" disabled="#{ejVtm.minutesSelected or ejVtm.secondSelected}">
+									<c:forEach varStatus="cnt" begin="0" end="59">
+										<f:selectItem itemLabel="#{cnt.index}" itemValue="#{cnt.index}" />
+									</c:forEach>
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column>
+								<h:outputLabel for="second" value="At Second"/>
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="second" value="#{ejVtm.selectedTerminalEjSettings.seconds}" disabled="#{ejVtm.minutesSelected or ejVtm.secondSelected}" >
+									<c:forEach varStatus="cnt" begin="0" end="59">
+										<f:selectItem itemLabel="#{cnt.index}" itemValue="#{cnt.index}" />
+									</c:forEach>
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row><p:column colspan="2"></p:column> </p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel for="everyMinute" value="At Every"/>
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="everyMinute" value="#{ejVtm.selectedTerminalEjSettings.minutes}" disabled="#{not ejVtm.minutesSelected}">
+									<c:forEach varStatus="cnt" begin="1" end="59">
+										<f:selectItem itemLabel="#{cnt.index}" itemValue="#{cnt.index}" />
+									</c:forEach>
+								</p:selectOneMenu>
+								Minute(s)
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel id="everySecondLabel" for="everySecond" value="At #{ejVtm.minutesSelected ? '' : 'Every'}"/>
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="everySecond" value="#{ejVtm.selectedTerminalEjSettings.seconds}" disabled="#{not (ejVtm.secondSelected or ejVtm.minutesSelected)}" >
+									<c:forEach varStatus="cnt" begin="1" end="59">
+										<f:selectItem itemLabel="#{cnt.index}" itemValue="#{cnt.index}" />
+									</c:forEach>
+								</p:selectOneMenu>
+								Second(s) - #{not (ejVtm.secondSelected or ejVtm.minutesSelected)} - #{ejVtm.minutesSelected ? '' : 'Every'}
+							</p:column>
+						</p:row>
+						
+						<p:row>
+							<p:column colspan="2">
+								<center>
+								<p:commandButton value="Save" style="width:100px" ajax="true" action="#{ejVtm.saveItem}" oncomplete="PF('schedulePanel').hide()" update="ejform:settingsTable" />
+								<p:commandButton value="Cancel" style="width:100px" ajax="true" oncomplete="PF('schedulePanel').hide()" process="@this" immediate="true" />
+								</center>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					
+				</p:outputPanel>
+			</p:overlayPanel>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

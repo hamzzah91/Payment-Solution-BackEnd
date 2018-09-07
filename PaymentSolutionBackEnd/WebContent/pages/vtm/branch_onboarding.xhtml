@@ -1,0 +1,158 @@
+<ui:composition template="/WEB-INF/templates/mainlayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<!-- 
+	<ui:define name="side-menu">
+		<ui:include src="/WEB-INF/includes/menu/vtm_customer_menu.xhtml" />
+	</ui:define>
+ -->
+	<ui:define name="content">
+		<h:form id="form">
+			<p:fieldset legend="Saved Branches" style="margin-bottom: 30px;">
+				<p:dataTable selectionMode="single" selection="#{branchOnBoarding.selectedBranch}" id="branches" var="branch" value="#{branchOnBoarding.savedBranches}" rowKey="#{branch.id}">
+					<f:facet name="header">
+            Branch Information
+        </f:facet>
+					<p:column headerText="Branch Name">
+						<h:outputText value="#{branch.branchName}" />
+					</p:column>
+					<p:column headerText="Branch Code">
+						<h:outputText value="#{branch.branchCode}" />
+					</p:column>
+					<p:column headerText="Building">
+						<h:outputText value="#{branch.building}" />
+					</p:column>
+					<p:column headerText="Street">
+						<h:outputText value="#{branch.street}" />
+					</p:column>
+					<p:column headerText="City">
+						<h:outputText value="#{branch.city}" />
+					</p:column>
+					<p:column headerText="State">
+						<h:outputText value="#{branch.state}" />
+					</p:column>
+					<p:column headerText="Country">
+						<h:outputText value="#{branch.country}" />
+					</p:column>
+				 <!-- <p:column style="width:32px;text-align: center">
+             <p:commandButton update=":form:branchDetail" oncomplete="PF('branchDialog').show()" icon="ui-icon-search" title="View">
+                <f:setPropertyActionListener value="#{branch}" target="#{branchOnBoarding.selectedBranch}" />
+            </p:commandButton>
+        </p:column> -->
+        <f:facet name="footer">
+            <p:commandButton process="branches" update=":dialogueForm:branchDetail" icon="ui-icon-search" value="Edit" oncomplete="PF('branchDialog').show()"/>
+        </f:facet>
+				</p:dataTable>
+			</p:fieldset>
+
+			<p:fieldset legend="New Branch" style="margin-bottom: 30px;">
+				<p:panelGrid columns="3"
+					style="width:100%; border-style: hidden !important;">
+					<p:column style="width:50%;">
+						<p:panel>
+							<div class="ui-g">
+								<div class="ui-g-6">Branch Name</div>
+								<div class="ui-g-6">
+									<p:inputText value="#{branchOnBoarding.branchUI.branchName}"
+										maxlength="150" required="true"
+										requiredMessage="Branch Name is required." />
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">Branch Code</div>
+								<div class="ui-g-6">
+									<p:inputText value="#{branchOnBoarding.branchUI.branchCode}"
+										maxlength="20" required="true"
+										requiredMessage="Branch Code is required." />
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">Building Name</div>
+								<div class="ui-g-6">
+									<p:inputText value="#{branchOnBoarding.branchUI.building}"
+										maxlength="150" required="true"
+										requiredMessage="Building Name is required." />
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">Street Address</div>
+								<div class="ui-g-6">
+									<p:inputText value="#{branchOnBoarding.branchUI.street}"
+										maxlength="150" />
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">City</div>
+								<div class="ui-g-6">
+									<p:inputText value="#{branchOnBoarding.branchUI.city}"
+										maxlength="50" />
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">State</div>
+								<div class="ui-g-6">
+									<p:inputText value="#{branchOnBoarding.branchUI.state}"
+										maxlength="50" />
+								</div>
+							</div>
+							<div class="ui-g">
+								<div class="ui-g-6">Country</div>
+								<div class="ui-g-6">
+									<p:inputText value="#{branchOnBoarding.branchUI.country}"
+										maxlength="50" />
+								</div>
+							</div>
+						</p:panel>
+					</p:column>
+				</p:panelGrid>
+				<br></br>
+				<p:growl id="msgs" showDetail="true" />
+				<h:commandButton value="Save" type="submit" update="msgs"
+					styleClass="ui-priority-primary"
+					action="#{branchOnBoarding.saveBranch}" />
+			</p:fieldset>
+			
+		</h:form>
+		
+		 <p:dialog id="dlg" header="Branch Info" widgetVar="branchDialog" showEffect="explode">
+		  <h:form id="dialogueForm">
+        <p:outputPanel id="branchDetail" style="text-align:center;">
+            <p:panelGrid  columns="2" rendered="#{not empty branchOnBoarding.selectedBranch}" columnClasses="label,value">
+            
+               <!--  <h:outputText value="Branch Name:" />
+                <p:inputText value="#{branchOnBoarding.selectedBranch.branchName}" />
+ 
+ 				<h:outputText value="Branch Code:" />
+                <p:inputText value="#{branchOnBoarding.selectedBranch.branchCode}" /> -->
+                
+                <h:outputText value="Building:" />
+                <p:inputText value="#{branchOnBoarding.selectedBranch.building}" />
+                
+                <h:outputText value="Street:" />
+                <p:inputText value="#{branchOnBoarding.selectedBranch.street}" />
+                
+                <h:outputText value="City:" />
+                <p:inputText value="#{branchOnBoarding.selectedBranch.city}" />
+                
+                <h:outputText value="State:" />
+                <p:inputText value="#{branchOnBoarding.selectedBranch.state}" />
+                
+                <h:outputText value="Country:" />
+                <p:inputText value="#{branchOnBoarding.selectedBranch.country}" />
+                
+            </p:panelGrid>
+            <h:commandButton value="Update" oncomplete="dlg.hide();"
+					styleClass="ui-priority-primary"
+					action="#{branchOnBoarding.updateBranch(branchOnBoarding.selectedBranch)}" update="msgs"/>
+        </p:outputPanel>
+        </h:form>
+    </p:dialog>
+	</ui:define>
+
+</ui:composition>
